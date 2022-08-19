@@ -5,6 +5,7 @@
 gradlew
 gradlew.bat
 src/main/resources/application.properties
+src/main/resources/application.yml
 .idea/**
 build
 !gradle/wrapper/gradle-wrapper.jar
