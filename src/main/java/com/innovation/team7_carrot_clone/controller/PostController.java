@@ -5,9 +5,7 @@ import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,12 @@ public class PostController {
     @GetMapping("/api/posts")
     public List<PostResponseDto> getPostList(){
         return postService.getPostList();
+    }
+
+    // 게시물 상세 조회
+    @ResponseBody
+    @GetMapping("/api/posts/{post_id}")
+    public PostResponseDto getPost(@PathVariable Long post_id){
+        return postService.getPost(post_id);
     }
 }
