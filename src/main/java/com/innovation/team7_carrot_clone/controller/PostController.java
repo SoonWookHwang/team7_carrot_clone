@@ -32,4 +32,16 @@ public class PostController {
     public PostResponseDto getPost(@PathVariable Long post_id){
         return postService.getPost(post_id);
     }
+
+    // 게시물 수정
+    @PutMapping("/api/posts/{post_id}")
+    public void updatePost(){
+
+    }
+
+    // 게시물 삭제
+    @DeleteMapping("/api/posts/{post_id}")
+    public void deletePost(@PathVariable Long post_id){
+
+    }
 }

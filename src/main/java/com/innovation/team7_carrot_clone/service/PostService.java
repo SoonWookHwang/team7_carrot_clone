@@ -36,7 +36,7 @@ public class PostService {
     // Post 상세 조회
     public PostResponseDto getPost(Long post_id){
         Post post = postRepository.findById(post_id).orElseThrow(
-                () -> new IllegalArgumentException("Couldn't find the post with this id : " + post_id)
+                () -> new IllegalArgumentException("Couldn't find the post")
         );
         return PostResponseDto.builder()
                 .post(post)
@@ -49,5 +49,22 @@ public class PostService {
     public Post createPost(PostRequestDto requestDto){
         Post post = requestDto.createPost();
         return postRepository.save(post);
+    }
+
+    // Post 수정
+    @Transactional
+    public Post updatePost(Long post_id, PostRequestDto postRequestDto){
+        Post post = postRepository.findById(post_id).orElseThrow(
+                () -> new IllegalArgumentException("Counldn't find the post with thhis id")
+        );
+
+        post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(),postRequestDto.getImgURL());
+        return post;
+    }
+
+    // Post 삭제
+    public Long deletePost(Long post_id) throws IllegalArgumentException{
+        postRepository.deleteById(post_id);
+        return post_id;
     }
 }
