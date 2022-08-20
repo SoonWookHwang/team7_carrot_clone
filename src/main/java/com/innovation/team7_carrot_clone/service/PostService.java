@@ -1,10 +1,12 @@
 package com.innovation.team7_carrot_clone.service;
 
+import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -44,5 +46,8 @@ public class PostService {
 
     // Post 생성
     @Transactional
-    public Post createPost(){}
+    public Post createPost(PostRequestDto requestDto){
+        Post post = requestDto.createPost();
+        return postRepository.save(post);
+    }
 }

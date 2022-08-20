@@ -1,6 +1,8 @@
 package com.innovation.team7_carrot_clone.controller;
 
+import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import com.innovation.team7_carrot_clone.dto.PostResponseDto;
+import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,8 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping("/api/posts")
-    public void createPost(){
-        postService.createPost();
+    public Post createPost(PostRequestDto postRequestDto){
+        return postService.createPost(postRequestDto);
     }
 
     // 게시글 전체 조회
