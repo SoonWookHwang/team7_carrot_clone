@@ -6,6 +6,7 @@ import com.innovation.team7_carrot_clone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,4 +41,8 @@ public class PostService {
                 .build();
 
     }
+
+    // Post 생성
+    @Transactional
+    public Post createPost(){}
 }
