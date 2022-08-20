@@ -5,6 +5,7 @@ import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +36,13 @@ public class PostController {
 
     // 게시물 수정
     @PutMapping("/api/posts/{post_id}")
-    public void updatePost(){
-
+    public Post updatePost(@PathVariable Long post_id, PostRequestDto postRequestDto){
+        return postService.updatePost(post_id, postRequestDto);
     }
 
     // 게시물 삭제
     @DeleteMapping("/api/posts/{post_id}")
-    public void deletePost(@PathVariable Long post_id){
-
+    public Long deletePost(@PathVariable Long post_id){
+        return postService.deletePost(post_id);
     }
 }
