@@ -23,4 +23,5 @@ public abstract class Timestamped {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }
