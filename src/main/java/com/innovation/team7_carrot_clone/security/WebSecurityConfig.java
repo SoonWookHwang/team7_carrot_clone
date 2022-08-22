@@ -55,6 +55,8 @@ public class WebSecurityConfig {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/admin/**").permitAll()
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/posts/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 세션인증 사용하지 않음

@@ -5,7 +5,6 @@ import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
