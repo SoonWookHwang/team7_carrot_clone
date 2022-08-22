@@ -12,15 +12,20 @@ public class User extends Timestamped {
     @Column(
             nullable = false
     )
-    private String username;
+    private String userPhoneNum;
+    @Column(
+            nullable = false //, unique = true
+    )
+    private String userName;
     @Column(
             nullable = false
     )
     private String password;
 
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String userPhoneNum,String userName, String password) {
+        this.userPhoneNum = userPhoneNum;
+        this.userName = userName;
         this.password = password;
     }
 
@@ -28,8 +33,8 @@ public class User extends Timestamped {
         this.user_id = user_id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserPhoneNum(String userPhoneNum) {
+        this.userPhoneNum = userPhoneNum;
     }
 
     public void setPassword(String password) {
@@ -40,8 +45,8 @@ public class User extends Timestamped {
         return this.user_id;
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getUserPhoneNum() {
+        return this.userPhoneNum;
     }
 
     public String getPassword() {
