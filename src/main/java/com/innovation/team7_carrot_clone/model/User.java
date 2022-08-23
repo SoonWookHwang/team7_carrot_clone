@@ -10,11 +10,11 @@ public class User extends Timestamped {
     @Id
     private Long user_id;
     @Column(
-            nullable = false
+            nullable = false ,unique = true
     )
     private String userPhoneNum;
     @Column(
-            nullable = false //, unique = true
+            nullable = false , unique = true
     )
     private String userName;
     @Column(

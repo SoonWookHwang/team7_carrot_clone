@@ -37,16 +37,19 @@ public class UserService {
         String password = requestDto.getPassword();
         String passwordCheck = requestDto.getPasswordCheck();
 
-        Optional<User> nameToCheck = this.userRepository.findByUserPhoneNum(userPhoneNum);
+        Optional<User> numToCheck = this.userRepository.findByUserPhoneNum(userPhoneNum);
+        Optional<User> nameToCheck = this.userRepository.findByUserName(userName);
 
-        if(nameToCheck.isPresent()){
-            return "중복된 아이디입니다.";
+        if(numToCheck.isPresent()){
+            return "중복된 번호가 존재합니다.";
         } else if(!Objects.equals(password, passwordCheck)){
             return "비밀번호가 일치하지 않습니다.";
         } else if(Objects.equals(userPhoneNum, "")){
             return "핸드폰 번호 형식의 아이디를 입력해주세요.";
-        } else if(Objects.equals(password, "")){
+        } else if(Objects.equals(password, "")) {
             return "비밀번호를 입력해주세요.";
+        } else if(nameToCheck.isPresent()){
+            return "중복된 이름이 존재합니다.";
         } else{
             password = this.passwordEncoder.encode(password);
             requestDto.setPassword(password);
