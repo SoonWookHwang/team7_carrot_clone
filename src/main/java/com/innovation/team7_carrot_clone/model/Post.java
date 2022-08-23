@@ -65,4 +65,8 @@ public class Post extends Timestamped{
         this.user = userFoundById;
         userFoundById.mapToContents(this);
     }
+
+    public void mapToPost(String postImageURL) {
+        this.imageUrl = postImageURL;
+    }
 }

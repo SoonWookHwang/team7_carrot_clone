@@ -80,4 +80,8 @@ public class User extends Timestamped {
     public void mapToContents(Post post) {
         postList.add(post);
     }
+
+    public void mapToUser(String userImageURL) {
+        this.imageUrl = userImageURL;
+    }
 }
