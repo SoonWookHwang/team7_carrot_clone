@@ -23,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public String getUsername() {
-        return this.user.getUserPhoneNum();
+        return this.user.getUsername();
     }
 
     public boolean isAccountNonExpired() {

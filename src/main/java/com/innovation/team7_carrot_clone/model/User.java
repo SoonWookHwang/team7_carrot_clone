@@ -16,13 +16,13 @@ public class User extends Timestamped {
     @Id
     private Long id;
     @Column(
-            nullable = false ,unique = true
+            nullable = false
+    )
+    private String username;
+
+    @Column(nullable = false
     )
     private String userPhoneNum;
-    @Column(
-            nullable = false , unique = true
-    )
-    private String userName;
     @Column(
             nullable = false
     )
@@ -39,10 +39,10 @@ public class User extends Timestamped {
     public User() {
     }
 
-    public User(String userPhoneNum,String userName, String password) {
-        this.userPhoneNum = userPhoneNum;
-        this.userName = userName;
+    public User(String username, String password, String userPhoneNum) {
+        this.username = username;
         this.password = password;
+        this.userPhoneNum = userPhoneNum;
     }
 
     public User(UserResponseDto userResponseDto) {
@@ -53,29 +53,41 @@ public class User extends Timestamped {
         this.id = id;
     }
 
-    public void setUserPhoneNum(String userPhoneNum) {
-        this.userPhoneNum = userPhoneNum;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setUserPhoneNum(String userPhoneNum) {
+        this.userPhoneNum = userPhoneNum;
+    }
 
     public Long getId() {
         return this.id;
     }
 
-    public String getUserPhoneNum() {
-        return this.userPhoneNum;
+    public String getUsername() {
+        return this.username;
     }
 
     public String getPassword() {
         return this.password;
     }
 
-    public String getImageUrl() { return this.imageUrl; }
+    public String getUserPhoneNum() {
+        return this.userPhoneNum;
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
 
     public void mapToContents(Post post) {
         postList.add(post);
