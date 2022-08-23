@@ -1,14 +1,20 @@
 package com.innovation.team7_carrot_clone.model;
 
-import javax.persistence.*;
+import com.innovation.team7_carrot_clone.dto.UserResponseDto;
 
-@Entity(name = "Users")
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+//@Entity(name = "Users")
+@Entity
 public class User extends Timestamped {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
+//    @Column(name = "user_id")
     @Id
-    private Long user_id;
+    private Long id;
     @Column(
             nullable = false ,unique = true
     )
@@ -22,6 +28,16 @@ public class User extends Timestamped {
     )
     private String password;
 
+    private String imageUrl;
+
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Post> postList = new ArrayList<>();
+
+    public User() {
+    }
 
     public User(String userPhoneNum,String userName, String password) {
         this.userPhoneNum = userPhoneNum;
@@ -29,8 +45,12 @@ public class User extends Timestamped {
         this.password = password;
     }
 
-    public void setId(Long user_id) {
-        this.user_id = user_id;
+    public User(UserResponseDto userResponseDto) {
+        this.imageUrl = userResponseDto.getImageUrl();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUserPhoneNum(String userPhoneNum) {
@@ -41,8 +61,10 @@ public class User extends Timestamped {
         this.password = password;
     }
 
-    public Long getUser_id() {
-        return this.user_id;
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public Long getId() {
+        return this.id;
     }
 
     public String getUserPhoneNum() {
@@ -53,6 +75,9 @@ public class User extends Timestamped {
         return this.password;
     }
 
-    public User() {
+    public String getImageUrl() { return this.imageUrl; }
+
+    public void mapToContents(Post post) {
+        postList.add(post);
     }
 }

@@ -7,6 +7,7 @@ import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
     private final UserRepository userRepository;
 
     public Boolean login(LoginRequestDto loginRequestDto) {

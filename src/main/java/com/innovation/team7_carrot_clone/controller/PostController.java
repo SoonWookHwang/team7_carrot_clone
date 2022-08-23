@@ -2,9 +2,13 @@ package com.innovation.team7_carrot_clone.controller;
 
 import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import com.innovation.team7_carrot_clone.dto.PostResponseDto;
+import com.innovation.team7_carrot_clone.dto.UserResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
+import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +20,16 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping("/api/posts")
-    public Post createPost(PostRequestDto postRequestDto){
-        return postService.createPost(postRequestDto);
+    public String createPost(@RequestBody PostRequestDto postRequestDto,
+                           @AuthenticationPrincipal UserDetailsImpl userDetailsImpl){
+        if(userDetailsImpl.getUser() != null){
+            Long userId = userDetailsImpl.getUser().getId();
+            String username = userDetailsImpl.getUsername();
+
+            this.postService.createPost(postRequestDto, userId, username);
+            return "redirect:/users/api/posts";
+        }
+        return "login";
     }
 
     // 게시글 전체 조회
