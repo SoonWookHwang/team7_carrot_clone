@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+//@Transactional
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +36,7 @@ public class S3Service {
     private String bucket;
 
     public S3RequestDto S3UserImageUpload(MultipartFile file, Long userId, String username) throws IOException {
-        User userFoundById = userRepository.findById(String.valueOf(userId))
+        User userFoundById = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
         if (userFoundById.getUsername().equals(username)) {

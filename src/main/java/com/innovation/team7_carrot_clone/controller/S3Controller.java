@@ -9,14 +9,15 @@ import com.innovation.team7_carrot_clone.repository.UserRepository;
 import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
 import com.innovation.team7_carrot_clone.service.S3Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@CrossOrigin(origins = "http://localhost:3000")
+@Transactional
 @RequiredArgsConstructor
 @RestController
 public class S3Controller {
@@ -28,14 +29,15 @@ public class S3Controller {
     @PostMapping("/users/{userId}/image")
     public String S3UserImageUpload(@RequestPart MultipartFile file,
                                     @PathVariable (name = "userId") Long userId,
-                                    UserDetailsImpl userDetailsImpl) throws IOException {
+                                    @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) throws IOException {
         String username = userDetailsImpl.getUsername();
         User userFound = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
         if(userDetailsImpl.getUser().getId().equals(userId)){
             String userImageURL = this.s3Service.S3UserImageUpload(file, userId, username).getImageUrl();
-            UserResponseDto.builder().user(userFound).imageUrl(userImageURL).build();
+//            UserResponseDto.builder().user(userFound).imageUrl(userImageURL).build();
+            userFound.mapToUser(userImageURL);
             return "redirect:/users/mypage";
         }
         return "login";
@@ -45,14 +47,15 @@ public class S3Controller {
     @PostMapping("/posts/{postId}/image")
     public String S3BoardImageUpload(@RequestPart MultipartFile file,
                                      @PathVariable (name = "postId") Long postId,
-                                     UserDetailsImpl userDetailsImpl) throws IOException {
+                                     @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) throws IOException {
         String username = userDetailsImpl.getUsername();
         Post postFound = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
         if(userDetailsImpl.getUser().getId().equals(postFound.getUser().getId())){
             String postImageURL = this.s3Service.S3PostImageUpload(file, postId, username).getImageUrl();
-            PostResponseDto.builder().post(postFound).imageUrl(postImageURL).build();
+//            PostResponseDto.builder().post(postFound).imageUrl(postImageURL).build();
+            postFound.mapToPost(postImageURL);
             return "redirect:/api/posts/{post_id}";
         }
 
