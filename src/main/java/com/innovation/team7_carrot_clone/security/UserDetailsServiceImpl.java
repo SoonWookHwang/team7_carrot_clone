@@ -16,9 +16,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetailsServiceImpl() {
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = (User)this.userRepository.findByUsername(username).orElseThrow(() -> {
-            return new UsernameNotFoundException("Can't find " + username);
+    public UserDetails loadUserByUsername(String userPhoneNum) throws UsernameNotFoundException {
+        User user = (User)this.userRepository.findByUserPhoneNum(userPhoneNum).orElseThrow(() -> {
+            return new UsernameNotFoundException("Can't find " + userPhoneNum);
         });
         return new UserDetailsImpl(user);
     }

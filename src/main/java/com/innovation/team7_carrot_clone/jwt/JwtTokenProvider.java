@@ -20,7 +20,7 @@ import java.util.Date;
 public class JwtTokenProvider {
     @Value("K7kjHSF345h345S86F3A2erGB98iWIad")
     private String secretKey;
-    private static final long TOKEN_VALID_TIME = 300000L * 6;
+    private static final long TOKEN_VALID_TIME = 300000L * 6;   //토큰 유효시간 30분
     private final UserDetailsService userDetailsService;
 
     @PostConstruct
