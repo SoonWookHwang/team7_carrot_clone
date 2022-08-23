@@ -3,7 +3,9 @@ package com.innovation.team7_carrot_clone.service;
 import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.model.Post;
+import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
+import com.innovation.team7_carrot_clone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     // Post 리스트 조회 - responseDto의 @Builder와 연계됨.
     public List<PostResponseDto> getPostList(){
@@ -46,9 +49,17 @@ public class PostService {
 
     // Post 생성
     @Transactional
-    public Post createPost(PostRequestDto requestDto){
-        Post post = requestDto.createPost();
-        return postRepository.save(post);
+    public Post createPost(PostRequestDto requestDto, Long userId, String username){
+        User userFoundById = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+        Post postCreated;
+
+        if(userFoundById.getUsername().equals(username)){
+            Post post = requestDto.createPost();
+            post.mapToUser(userFoundById);
+            return postRepository.save(post);
+        }
+        return null;
     }
 
     // Post 수정
@@ -58,7 +69,7 @@ public class PostService {
                 () -> new IllegalArgumentException("Counldn't find the post with thhis id")
         );
 
-        post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(),postRequestDto.getImgURL());
+        post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(),postRequestDto.getImageUrl());
         return post;
     }
 
