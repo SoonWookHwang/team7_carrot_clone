@@ -1,7 +1,5 @@
 package com.innovation.team7_carrot_clone.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,7 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String price;
 
-    @Column(nullable = false)
+    @Column
     private String imageUrl;
 
 //    @JsonIgnore

@@ -2,6 +2,7 @@ package com.innovation.team7_carrot_clone.service;
 
 import com.innovation.team7_carrot_clone.dto.LoginRequestDto;
 import com.innovation.team7_carrot_clone.dto.SignupRequestDto;
+import com.innovation.team7_carrot_clone.dto.UserResponseDto;
 import com.innovation.team7_carrot_clone.jwt.JwtTokenProvider;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
@@ -23,12 +24,19 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
 
-    public Boolean login(LoginRequestDto loginRequestDto) {
-        User user = this.userRepository.findByUserPhoneNum(loginRequestDto.getUserPhoneNum()).orElse((User) null);
-        if(user != null) {
-            return this.passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword());
+    public UserResponseDto login(LoginRequestDto loginRequestDto) throws IllegalAccessException {
+        User user = this.userRepository.findByUserPhoneNum(loginRequestDto.getUserPhoneNum()).orElseThrow(() -> new IllegalAccessException("해당 아이디가 존재하지 않습니다."));
+
+        boolean passwordCheck = this.passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword());
+        if (passwordCheck) {
+            String token = this.jwtTokenProvider.createToken(loginRequestDto.getUserPhoneNum());
+            return UserResponseDto.builder()
+                    .user(user)
+                    .token(token)
+                    .build();
+        }else {
+            throw new IllegalAccessException("회원정보가 일치하지 않습니다.");
         }
-        else  return false;
     }
 
     public String registerUser(SignupRequestDto requestDto) {
@@ -40,23 +48,22 @@ public class UserService {
         Optional<User> nameToCheck = this.userRepository.findByUsername(username);
         Optional<User> numToCheck = this.userRepository.findByUserPhoneNum(userPhoneNum);
 
-        if(nameToCheck.isPresent()) {
+        if (nameToCheck.isPresent()) {
             return "중복된 아이디입니다.";
-        }else if(numToCheck.isPresent()){
+        } else if (numToCheck.isPresent()) {
             return "중복된 연락처가 존재합니다.";
-        } else if(!Objects.equals(password, passwordCheck)){
+        } else if (!Objects.equals(password, passwordCheck)) {
             return "비밀번호가 일치하지 않습니다.";
-        } else if(Objects.equals(username, "")){
+        } else if (Objects.equals(username, "")) {
             return "아이디를 입력해주세요.";
-        } else if(Objects.equals(password, "")){
+        } else if (Objects.equals(password, "")) {
             return "비밀번호를 입력해주세요.";
-        } else{
+        } else {
             password = this.passwordEncoder.encode(password);
             requestDto.setPassword(password);
-            User user = new User(username, password,userPhoneNum);
+            User user = new User(username, password, userPhoneNum);
             this.userRepository.save(user);
             return "회원가입에 성공하였습니다.";
         }
     }
-
 }
