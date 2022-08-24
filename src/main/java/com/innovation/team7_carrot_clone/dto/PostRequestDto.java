@@ -13,7 +13,7 @@ public class PostRequestDto {
     private String contents;
     private String category;
     private String price;
-    private String imageUrl;
+
 
     public Post createPost() {
         return Post.builder()
@@ -21,7 +21,6 @@ public class PostRequestDto {
                 .contents(contents)
                 .category(category)
                 .price(price)
-                .imageUrl(imageUrl)
                 .build();
     }
 }

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 //@Transactional
 @Service
@@ -94,6 +95,21 @@ public class S3Service {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
+    public String uploadFile(MultipartFile imageFile) throws IllegalArgumentException, NullPointerException {
+        String fileName = UUID.randomUUID() + "-" + Objects.requireNonNull(imageFile.getOriginalFilename()).toLowerCase();
+        try {
+            if (!(fileName.endsWith(".bmp") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png"))) {
+                throw new IllegalArgumentException("bmp,jpg,jpeg,png 형식의 이미지 파일이 요구됨.");
+            }
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, imageFile.getInputStream(), null)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new RuntimeException("S3 파일 업로드 실패.");
+        }
+        return amazonS3Client.getUrl(bucket, fileName).toString();    ///url string 리턴
+    }
+
+
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         if (convertFile.createNewFile()) {
@@ -105,3 +121,5 @@ public class S3Service {
         return Optional.empty();
     }
 }
+
+
