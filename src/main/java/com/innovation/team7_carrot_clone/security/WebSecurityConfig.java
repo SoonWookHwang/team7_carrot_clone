@@ -47,9 +47,15 @@ public class WebSecurityConfig {
         http.csrf().disable();
         http.cors();
         http.headers().frameOptions().disable();
-        http.authorizeRequests()
+        http.formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/posts")
+                .and()
+                .authorizeRequests()
                 .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/posts/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/scripts/**").permitAll()
                 .antMatchers("/css/**").permitAll()
