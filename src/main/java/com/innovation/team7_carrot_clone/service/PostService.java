@@ -21,6 +21,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     // Post 리스트 조회 - responseDto의 @Builder와 연계됨.
     public List<PostResponseDto> getPostList(){
@@ -45,38 +46,40 @@ public class PostService {
         return PostResponseDto.builder()
                 .post(post)
                 .build();
-
     }
 
     // Post 생성
     @Transactional
-    public Post createPost(PostRequestDto requestDto, Long userId, String username){
-        User userFoundById = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-        Post postCreated;
-
-        if(userFoundById.getUsername().equals(username)){
-            Post post = requestDto.createPost();
-            post.mapToUser(userFoundById);
-            return postRepository.save(post);
+    public Post createPost(PostRequestDto requestDto,UserDetailsImpl userDetails,MultipartFile multipartFile){
+        String imageUrl = "";
+        if(userRepository.findById(userDetails.getUser().getId()).isPresent()){
+            if(imageUrl!=null){
+            imageUrl = s3Service.uploadFile(multipartFile);
+        }
+        Post post = new Post(requestDto.getTitle(), requestDto.getContents(), requestDto.getCategory(), requestDto.getPrice(), imageUrl);
+        post.mapToUser(userDetails.getUser());
+        postRepository.save(post);
         }
         return null;
     }
 
     // Post 수정
     @Transactional
-    public Post updatePost(Long post_id, PostRequestDto postRequestDto, UserDetailsImpl userDetails){
+    public PostResponseDto updatePost(Long post_id, PostRequestDto postRequestDto, UserDetailsImpl userDetails,MultipartFile imageFile){
         Post post = postRepository.findById(post_id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         String loginUser = userDetails.getUser().getUsername();
         String author = post.getUser().getUsername();
+        String imageUrl = "";
         if(author.equals(loginUser)){
-            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(), postRequestDto.getImageUrl());
+            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(),imageUrl);
         }else {
             throw new IllegalArgumentException("해당 게시글에 대한 수정 권한이 없습니다.");
         }
-        return post;
+        return PostResponseDto.builder()
+                .post(post)
+                .build();
     }
 
     // Post 삭제
