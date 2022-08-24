@@ -1,7 +1,5 @@
 package com.innovation.team7_carrot_clone.model;
 
-import com.innovation.team7_carrot_clone.dto.UserResponseDto;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +43,6 @@ public class User extends Timestamped {
         this.userPhoneNum = userPhoneNum;
     }
 
-    public User(UserResponseDto userResponseDto) {
-        this.imageUrl = userResponseDto.getImageUrl();
-    }
 
     public void setId(Long id) {
         this.id = id;

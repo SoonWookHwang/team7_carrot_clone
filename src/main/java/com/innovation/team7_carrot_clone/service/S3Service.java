@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.innovation.team7_carrot_clone.dto.S3RequestDto;
-import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -48,17 +46,17 @@ public class S3Service {
         return null;
     }
 
-    public S3RequestDto S3PostImageUpload(MultipartFile file, Long postId, String username) throws IOException {
-        Post postFoundById = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-
-        if (postFoundById.getUser().getUsername().equals(username)) {
-            File uploadFile = convert(file).orElseThrow(() -> new IllegalArgumentException("파일 업로드에 실패하였습니다."));
-            String dir = "static/images/".concat(String.valueOf(postId));
-            return upload(uploadFile, dir);
-        }
-        return null;
-    }
+//    public S3RequestDto S3PostImageUpload(MultipartFile file, Long postId, String username) throws IOException {
+//        Post postFoundById = postRepository.findById(postId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+//
+//        if (postFoundById.getUser().getUsername().equals(username)) {
+//            File uploadFile = convert(file).orElseThrow(() -> new IllegalArgumentException("파일 업로드에 실패하였습니다."));
+//            String dir = "static/images/".concat(String.valueOf(postId));
+//            return upload(uploadFile, dir);
+//        }
+//        return null;
+//    }
 
     private S3RequestDto upload(File uploadFile, String dir) {
         String sourceName = uploadFile.getName();
@@ -95,13 +93,13 @@ public class S3Service {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    public String uploadFile(MultipartFile imageFile) throws IllegalArgumentException, NullPointerException {
-        String fileName = UUID.randomUUID() + "-" + Objects.requireNonNull(imageFile.getOriginalFilename()).toLowerCase();
+    public String uploadFile(MultipartFile file) throws IllegalArgumentException {
+        String fileName = UUID.randomUUID() + "-" + Objects.requireNonNull(file.getOriginalFilename()).toLowerCase();
         try {
             if (!(fileName.endsWith(".bmp") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png"))) {
                 throw new IllegalArgumentException("bmp,jpg,jpeg,png 형식의 이미지 파일이 요구됨.");
             }
-            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, imageFile.getInputStream(), null)
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new RuntimeException("S3 파일 업로드 실패.");

@@ -2,7 +2,6 @@ package com.innovation.team7_carrot_clone.repository;
 
 
 import com.innovation.team7_carrot_clone.model.Post;
-import com.innovation.team7_carrot_clone.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

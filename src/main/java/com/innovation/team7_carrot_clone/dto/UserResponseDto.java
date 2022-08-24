@@ -4,12 +4,11 @@ import com.innovation.team7_carrot_clone.model.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class UserResponseDto {
-    private String imageUrl;
-    private final LocalDateTime modifiedAt;
+
+    private final String username;
+    private String token;
 
 //    @Builder
 //    public UserResponseDto(User user, String imageUrl){
@@ -18,8 +17,8 @@ public class UserResponseDto {
 //    }
 
     @Builder
-    public UserResponseDto(User user, String imageUrl){
-        this.imageUrl = imageUrl;
-        this.modifiedAt = user.getModifiedAt();
+    public UserResponseDto(User user, String token){
+        this.username = user.getUsername();
+        this.token = token;
     }
 }
