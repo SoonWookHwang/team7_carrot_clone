@@ -28,7 +28,7 @@ public class UserService {
         if(user != null) {
             return this.passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword());
         }
-        else    return false;
+        else  return false;
     }
 
     public String registerUser(SignupRequestDto requestDto) {
