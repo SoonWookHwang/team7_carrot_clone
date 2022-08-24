@@ -19,26 +19,14 @@ public class PostResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime modifiedAt;
 
-//    @Builder
-//    public PostResponseDto(Post post){
-//        this.post_id = post.getPost_id();
-//        this.title = post.getTitle();
-//        this.contents = post.getCategory();
-//        this.category = post.getCategory();
-//        this.price = post.getPrice();
-//        this.imageUrl = post.getImageUrl();
-//        this.modifiedAt = post.getModifiedAt();
-//    }
-
     @Builder
-    public PostResponseDto(Post post, String imageUrl){
+    public PostResponseDto(Post post){
         this.post_id = post.getPost_id();
         this.title = post.getTitle();
         this.contents = post.getCategory();
         this.category = post.getCategory();
         this.price = post.getPrice();
-        this.imageUrl = imageUrl;
+        this.imageUrl = post.getImageUrl();
         this.modifiedAt = post.getModifiedAt();
     }
-
 }
