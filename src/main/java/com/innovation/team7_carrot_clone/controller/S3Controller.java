@@ -1,8 +1,5 @@
 package com.innovation.team7_carrot_clone.controller;
 
-import com.innovation.team7_carrot_clone.dto.PostResponseDto;
-import com.innovation.team7_carrot_clone.dto.UserResponseDto;
-import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
@@ -42,23 +39,23 @@ public class S3Controller {
         }
         return "login";
     }
-
-    // 게시글 수정 시 게시글의 상품 이미지 업로드 또는 수정 가능.
-    @PostMapping("/posts/{postId}/image")
-    public String S3BoardImageUpload(@RequestPart MultipartFile file,
-                                     @PathVariable (name = "postId") Long postId,
-                                     @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) throws IOException {
-        String username = userDetailsImpl.getUsername();
-        Post postFound = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-
-        if(userDetailsImpl.getUser().getId().equals(postFound.getUser().getId())){
-            String postImageURL = this.s3Service.S3PostImageUpload(file, postId, username).getImageUrl();
-//            PostResponseDto.builder().post(postFound).imageUrl(postImageURL).build();
-            postFound.mapToPost(postImageURL);
-            return "redirect:/api/posts/{post_id}";
-        }
-
-        return "login";
-    }
+//
+//    // 게시글 수정 시 게시글의 상품 이미지 업로드 또는 수정 가능.
+//    @PostMapping("/posts/{postId}/image")
+//    public String S3BoardImageUpload(@RequestPart MultipartFile file,
+//                                     @PathVariable (name = "postId") Long postId,
+//                                     @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) throws IOException {
+//        String username = userDetailsImpl.getUsername();
+//        Post postFound = postRepository.findById(postId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+//
+//        if(userDetailsImpl.getUser().getId().equals(postFound.getUser().getId())){
+//            String postImageURL = this.s3Service.S3PostImageUpload(file, postId, username).getImageUrl();
+////            PostResponseDto.builder().post(postFound).imageUrl(postImageURL).build();
+//            postFound.mapToPost(postImageURL);
+//            return "redirect:/api/posts/{post_id}";
+//        }
+//
+//        return "login";
+//    }
 }

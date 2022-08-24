@@ -1,15 +1,10 @@
 package com.innovation.team7_carrot_clone;
 
-import com.innovation.team7_carrot_clone.model.Post;
-import com.innovation.team7_carrot_clone.repository.PostRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-import java.util.List;
 
 @EnableJpaAuditing
 @SpringBootApplication
