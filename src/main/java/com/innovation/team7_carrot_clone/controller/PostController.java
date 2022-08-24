@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
@@ -55,6 +57,7 @@ public class PostController {
 
     // 게시물 수정
     @PutMapping("/posts/{post_id}")
+
     public String updatePost(@PathVariable Long post_id, @RequestBody PostRequestDto postRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
         try{
             postService.updatePost(post_id, postRequestDto, userDetailsImpl);
@@ -67,6 +70,7 @@ public class PostController {
 
     // 게시물 삭제
     @DeleteMapping("/posts/{post_id}")
+
     public String deletePost(@PathVariable Long post_id,@AuthenticationPrincipal UserDetailsImpl userDetails){
         try{
             postService.deletePost(post_id,userDetails);
