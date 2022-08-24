@@ -23,7 +23,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post){
         this.post_id = post.getPost_id();
         this.title = post.getTitle();
-        this.contents = post.getCategory();
+        this.contents = post.getContents();
         this.category = post.getCategory();
         this.price = post.getPrice();
         this.imageUrl = post.getImageUrl();
