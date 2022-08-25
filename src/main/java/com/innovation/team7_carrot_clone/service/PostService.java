@@ -6,7 +6,7 @@ import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
-import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
+import com.innovation.team7_carrot_clone.config.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,22 +77,36 @@ public class PostService {
     }
 
     // Post 수정
-    @Transactional  //S3 추가 ,ㅊ
-    public PostResponseDto updatePost(Long post_id, PostRequestDto postRequestDto, UserDetailsImpl userDetails, MultipartFile file) {
-        Post post = postRepository.findById(post_id).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
-        );
-        String loginUser = userDetails.getUser().getUsername();
-        String author = post.getUser().getUsername();
+    @Transactional
+    public PostResponseDto updatePost(Long post_id, PostRequestDto postRequestDto, UserDetailsImpl userDetails, MultipartFile file, Long userId) {
+//        Post post = postRepository.findById(post_id).orElseThrow(
+//                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+//        );
+//        String loginUser = userDetails.getUser().getUsername();
+//        String author = post.getUser().getUsername();
+//        String imageUrl = post.getImageUrl();
+//        if (author.equals(loginUser)) {
+//            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(), imageUrl);
+//        } else {
+//            throw new IllegalArgumentException("해당 게시글에 대한 수정 권한이 없습니다.");
+//        }
+//        return PostResponseDto.builder()
+//                .post(post)
+//                .build();
+        User userFoundById = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+        Post postFoundById = postRepository.findById(post_id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         String imageUrl = "";
-        if (author.equals(loginUser)) {
-            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(), imageUrl);
-        } else {
-            throw new IllegalArgumentException("해당 게시글에 대한 수정 권한이 없습니다.");
+        if (userRepository.findById(userDetails.getUser().getId()).isPresent()) {
+            if (!file.isEmpty()) {
+                imageUrl = s3Service.uploadFile(file);
+            }
         }
-        return PostResponseDto.builder()
-                .post(post)
-                .build();
+        postFoundById.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(), imageUrl);
+        postFoundById.mapToUser(userFoundById);
+        postRepository.save(postFoundById);
+        return PostResponseDto.builder().post(postFoundById).build();
     }
 
     // Post 삭제

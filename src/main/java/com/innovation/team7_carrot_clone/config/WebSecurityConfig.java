@@ -1,4 +1,4 @@
-package com.innovation.team7_carrot_clone.security;
+package com.innovation.team7_carrot_clone.config;
 
 import com.innovation.team7_carrot_clone.jwt.JwtAuthenticationFilter;
 import com.innovation.team7_carrot_clone.jwt.JwtTokenProvider;

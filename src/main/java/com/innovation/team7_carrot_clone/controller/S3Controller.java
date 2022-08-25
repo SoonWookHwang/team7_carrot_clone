@@ -3,7 +3,7 @@ package com.innovation.team7_carrot_clone.controller;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
-import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
+import com.innovation.team7_carrot_clone.config.UserDetailsImpl;
 import com.innovation.team7_carrot_clone.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
