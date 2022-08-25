@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Transactional
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -45,18 +44,6 @@ public class S3Service {
         }
         return null;
     }
-
-//    public S3RequestDto S3PostImageUpload(MultipartFile file, Long postId, String username) throws IOException {
-//        Post postFoundById = postRepository.findById(postId)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-//
-//        if (postFoundById.getUser().getUsername().equals(username)) {
-//            File uploadFile = convert(file).orElseThrow(() -> new IllegalArgumentException("파일 업로드에 실패하였습니다."));
-//            String dir = "static/images/".concat(String.valueOf(postId));
-//            return upload(uploadFile, dir);
-//        }
-//        return null;
-//    }
 
     private S3RequestDto upload(File uploadFile, String dir) {
         String sourceName = uploadFile.getName();

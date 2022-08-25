@@ -1,18 +1,13 @@
 package com.innovation.team7_carrot_clone;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 @EnableJpaAuditing
 @SpringBootApplication
@@ -37,20 +32,4 @@ public class Team7CarrotCloneApplication {
 		multipartResolver.setResolveLazily(multipartProperties.isResolveLazily());
 		return multipartResolver;
 	}
-
-//	@Bean
-//		public CommandLineRunner demo(PostRepository postRepository) {
-//			return (args) -> {
-//				Post post = new Post("전자렌지 팔아요", "사용한지 6개월 된 거의 새 제품 입니다.", "전자/가전", "25000원", "/images/제목없음.png");
-//				postRepository.save(post);
-//				List<Post> postList = postRepository.findAll(); // 조회
-//				for(Post p : postList){
-//					System.out.println(p.getTitle());
-//					System.out.println(p.getContents());
-//					System.out.println(p.getCategory());
-//					System.out.println(p.getPrice());
-//					System.out.println(p.getImageUrl());
-//				}
-//			};
-//		}
 }
