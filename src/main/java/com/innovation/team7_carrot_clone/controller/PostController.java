@@ -3,7 +3,7 @@ package com.innovation.team7_carrot_clone.controller;
 import com.innovation.team7_carrot_clone.dto.PostRequestDto;
 import com.innovation.team7_carrot_clone.dto.PostResponseDto;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
-import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
+import com.innovation.team7_carrot_clone.config.UserDetailsImpl;
 import com.innovation.team7_carrot_clone.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

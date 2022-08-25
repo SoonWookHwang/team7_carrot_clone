@@ -6,7 +6,7 @@ import com.innovation.team7_carrot_clone.model.Post;
 import com.innovation.team7_carrot_clone.model.User;
 import com.innovation.team7_carrot_clone.repository.PostRepository;
 import com.innovation.team7_carrot_clone.repository.UserRepository;
-import com.innovation.team7_carrot_clone.security.UserDetailsImpl;
+import com.innovation.team7_carrot_clone.config.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

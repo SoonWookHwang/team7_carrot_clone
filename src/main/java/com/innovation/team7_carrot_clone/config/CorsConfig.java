@@ -1,4 +1,4 @@
-package com.innovation.team7_carrot_clone.security;
+package com.innovation.team7_carrot_clone.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
