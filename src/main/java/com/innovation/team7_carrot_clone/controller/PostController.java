@@ -20,13 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/posts")
-//@RequestMapping(value = "/posts", headers = ("content-type=multipart/*"))
 public class PostController {
     private final PostService postService;
     private final PostRepository postRepository;
 
     // 게시글 작성
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}) //put에 추가
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public String createPost(@RequestPart PostRequestDto postRequestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                              @RequestPart(required = false) MultipartFile file){
@@ -53,19 +52,11 @@ public class PostController {
     }
 
     // 게시물 수정
-//    @ResponseBody
     @PutMapping(value = "/{post_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, headers = ("content-type=multipart/*"))
     public String updatePost(@PathVariable(name = "post_id") Long post_id,
                              @RequestPart PostRequestDto postRequestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                              @RequestPart(required = false) MultipartFile file) {
-//        try{
-//            postService.updatePost(post_id, postRequestDto, userDetailsImpl, file);
-//        }catch (IllegalArgumentException e){
-//            log.info(e.getMessage());
-//            return "login";
-//        }
-//        return "redirect:/posts";
         if(userDetailsImpl.getUser() != null){
             Long userId = userDetailsImpl.getUser().getId();
             this.postService.updatePost(post_id, postRequestDto,userDetailsImpl, file, userId);
@@ -76,7 +67,6 @@ public class PostController {
 
     // 게시물 삭제
     @DeleteMapping("/{post_id}")
-
     public String deletePost(@PathVariable Long post_id,@AuthenticationPrincipal UserDetailsImpl userDetails){
         try{
             postService.deletePost(post_id,userDetails);

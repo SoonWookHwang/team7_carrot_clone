@@ -10,12 +10,6 @@ public class UserResponseDto {
     private final String username;
     private String token;
 
-//    @Builder
-//    public UserResponseDto(User user, String imageUrl){
-//        this.imageUrl = imageUrl;
-//        this.modifiedAt = user.getModifiedAt();
-//    }
-
     @Builder
     public UserResponseDto(User user, String token){
         this.username = user.getUsername();

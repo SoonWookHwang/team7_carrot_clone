@@ -13,14 +13,4 @@ public class PostRequestDto {
     private String contents;
     private String category;
     private String price;
-
-
-    public Post createPost() {
-        return Post.builder()
-                .title(title)
-                .contents(contents)
-                .category(category)
-                .price(price)
-                .build();
-    }
 }

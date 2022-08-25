@@ -58,14 +58,6 @@ public class PostService {
             if (!file.isEmpty()) {
                 imageUrl = s3Service.uploadFile(file);
             }
-//            Post post = new Post(requestDto.getTitle(), requestDto.getContents(), requestDto.getCategory(), requestDto.getPrice(), imageUrl);
-//            Post post = Post.builder()
-//                    .title(requestDto.getTitle())
-//                    .contents(requestDto.getContents())
-//                    .category(requestDto.getCategory()).price(requestDto.getPrice()).imageUrl(imageUrl).build();
-//            post.mapToUser(userDetails.getUser());
-//            postRepository.save(post);
-//            return post;
         }
         Post post = Post.builder()
                 .title(requestDto.getTitle())
@@ -78,21 +70,11 @@ public class PostService {
 
     // Post 수정
     @Transactional
-    public PostResponseDto updatePost(Long post_id, PostRequestDto postRequestDto, UserDetailsImpl userDetails, MultipartFile file, Long userId) {
-//        Post post = postRepository.findById(post_id).orElseThrow(
-//                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
-//        );
-//        String loginUser = userDetails.getUser().getUsername();
-//        String author = post.getUser().getUsername();
-//        String imageUrl = post.getImageUrl();
-//        if (author.equals(loginUser)) {
-//            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategory(), postRequestDto.getPrice(), imageUrl);
-//        } else {
-//            throw new IllegalArgumentException("해당 게시글에 대한 수정 권한이 없습니다.");
-//        }
-//        return PostResponseDto.builder()
-//                .post(post)
-//                .build();
+    public PostResponseDto updatePost(Long post_id,
+                                      PostRequestDto postRequestDto,
+                                      UserDetailsImpl userDetails,
+                                      MultipartFile file,
+                                      Long userId) {
         User userFoundById = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
         Post postFoundById = postRepository.findById(post_id)
@@ -110,6 +92,7 @@ public class PostService {
     }
 
     // Post 삭제
+    @Transactional
     public void deletePost(Long post_id, UserDetailsImpl userDetails) throws IllegalArgumentException {
         Post post = postRepository.findById(post_id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")

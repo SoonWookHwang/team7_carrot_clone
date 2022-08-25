@@ -53,7 +53,6 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/posts/**").permitAll()
                 .antMatchers("/js/**").permitAll()
